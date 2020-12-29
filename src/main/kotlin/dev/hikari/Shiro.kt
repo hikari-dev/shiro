@@ -1,12 +1,12 @@
 package dev.hikari
 
 import com.charleskorn.kaml.Yaml
+import dev.hikari.config.Config
+import dev.hikari.receiver.MessageReceiver
+import dev.hikari.quartz.Scheduler
 import kotlinx.coroutines.runBlocking
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.alsoLogin
-import net.mamoe.mirai.contact.nameCardOrNick
-import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.message.data.content
 import net.mamoe.mirai.utils.BotConfiguration.MiraiProtocol.ANDROID_PAD
 import java.io.File
 
@@ -15,15 +15,20 @@ val config: Config by lazy {
     Yaml.default.decodeFromString(Config.serializer(), configStr)
 }
 
-fun main(): Unit = runBlocking {
-
-    val bot = BotFactory.newBot(config.bot.qq, config.bot.password) {
+val shiro by lazy {
+    BotFactory.newBot(config.bot.qq, config.bot.password) {
         fileBasedDeviceInfo()
         protocol = ANDROID_PAD
-    }.alsoLogin()
-
-
-    bot.eventChannel.subscribeAlways<GroupMessageEvent> {
-        println("收到群 ${it.group.name}(${it.group.id}) 的 ${it.sender.nameCardOrNick}(${it.sender.id}) 发送的消息 - ${it.message.content}")
     }
+}
+
+val logger by lazy { shiro.logger }
+
+fun main(): Unit = runBlocking {
+
+    shiro.alsoLogin()
+
+    MessageReceiver.handleMessages()
+
+    Scheduler.startSchedule()
 }
