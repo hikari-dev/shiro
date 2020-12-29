@@ -2,8 +2,8 @@ package dev.hikari
 
 import com.charleskorn.kaml.Yaml
 import dev.hikari.config.Config
-import dev.hikari.receiver.MessageReceiver
-import dev.hikari.quartz.Scheduler
+import dev.hikari.quartz.startSchedule
+import dev.hikari.receiver.handleMessages
 import kotlinx.coroutines.runBlocking
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.alsoLogin
@@ -28,7 +28,7 @@ fun main(): Unit = runBlocking {
 
     shiro.alsoLogin()
 
-    MessageReceiver.handleMessages()
+    handleMessages()
 
-    Scheduler.startSchedule()
+    startSchedule()
 }
