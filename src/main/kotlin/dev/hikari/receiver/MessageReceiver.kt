@@ -18,6 +18,7 @@ private val groupMap = hashMapOf<Long, FixedStack<GroupMessageEvent>>()
  * Handle all the messages shiro received.
  */
 fun handleMessages() {
+
     storeMessagesToDatabase()
 
     handleFriendMessages()
