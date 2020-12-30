@@ -5,7 +5,7 @@ import dev.hikari.shiro
 import net.mamoe.mirai.event.subscribeGroupMessages
 
 /**
- * handle all the messages shiro received
+ * Handle all the messages shiro received.
  */
 fun handleMessages() {
 
@@ -15,14 +15,14 @@ fun handleMessages() {
 }
 
 /**
- * handle all friend message event
+ * Handle all friend message event.
  */
 fun handleFriendMessages() {
 
 }
 
 /**
- * handle all group message event
+ * Handle all group message event.
  */
 fun handleGroupMessages() {
     shiro.eventChannel.subscribeGroupMessages {

@@ -9,8 +9,8 @@ import org.quartz.impl.StdSchedulerFactory
 private val scheduler = StdSchedulerFactory().scheduler
 
 /**
- * Visit the url below to learn about cron expressions
- * @see <a href="https://github.com/quartz-scheduler/quartz/blob/master/docs/tutorials/crontrigger.md#CronTriggersTutorial-Introduction">CronTrigger Tutorial</a>
+ * Visit the page below to learn about cron expressions.
+ * @see <a href="https://github.com/quartz-scheduler/quartz/blob/master/docs/tutorials/crontrigger.md">CronTrigger Tutorial</a>
  */
 fun startSchedule() {
     val job = JobBuilder.newJob(MorningTask::class.java)
@@ -18,7 +18,7 @@ fun startSchedule() {
         .build()
     val trigger = TriggerBuilder.newTrigger()
         .withIdentity("MorningTrigger")
-        .withSchedule(CronScheduleBuilder.cronSchedule("30 42 17 * * ?"))
+        .withSchedule(CronScheduleBuilder.cronSchedule("00 00 08 * * ?"))
         .build()
     scheduler.scheduleJob(job, trigger)
     scheduler.start()
