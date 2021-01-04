@@ -17,7 +17,7 @@ fun handleMessages() {
 }
 
 fun storeMessagesToDatabase() {
-    // TODO: 2020/12/30 Store message to mysql db.
+    // TODO: 2020/12/30 Store message to database.
 
 }
 
