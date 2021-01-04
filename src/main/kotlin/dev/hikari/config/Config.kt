@@ -11,8 +11,16 @@ data class Config(
 ) {
 
     @Serializable
-    data class BotConfig(val qq: Long, val password: String)
+    data class BotConfig(
+        val qq: Long,
+        val password: String
+    )
 
     @Serializable
-    data class DatabaseConfig(val url: String, val username: String, val password: String)
+    data class DatabaseConfig(
+        val url: String,
+        val driverClassName: String,
+        val username: String,
+        val password: String
+    )
 }

@@ -1,6 +1,6 @@
 package dev.hikari.api
 
-import dev.hikari.entity.Hitokoto
+import dev.hikari.api.entity.Hitokoto
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*

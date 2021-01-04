@@ -1,4 +1,4 @@
-package dev.hikari.entity
+package dev.hikari.api.entity
 
 import kotlinx.serialization.Serializable
 
