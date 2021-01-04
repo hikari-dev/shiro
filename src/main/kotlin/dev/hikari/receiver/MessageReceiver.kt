@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 /**
  * Handle all the messages shiro received.
  */
-suspend fun handleMessages() {
+fun handleMessages() {
 
     storeMessagesToDatabase()
 
@@ -49,7 +49,7 @@ private val db by lazy {
 
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-suspend fun storeMessagesToDatabase() {
+fun storeMessagesToDatabase() {
     shiro.eventChannel.subscribeAlways<MessageEvent> { event ->
         val messageContent = buildString {
             for (message in event.message) {
