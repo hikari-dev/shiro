@@ -52,6 +52,7 @@ private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 fun storeMessagesToDatabase() {
     shiro.eventChannel.subscribeAlways<MessageEvent> { event ->
         val messageContent = buildString {
+            // TODO: 2021/1/5 MarketFace can't be retrieved from event.message
             for (message in event.message) {
                 append(
                     when (message) {
