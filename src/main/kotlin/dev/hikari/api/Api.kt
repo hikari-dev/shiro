@@ -18,4 +18,8 @@ object Api {
         val rspStr = httpClient.get<String>("https://v1.hitokoto.cn")
         return json.decodeFromString(Hitokoto.serializer(), rspStr)
     }
+
+    suspend fun getWeather() {
+
+    }
 }
