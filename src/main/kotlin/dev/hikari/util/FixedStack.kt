@@ -1,3 +1,5 @@
+package dev.hikari.util
+
 import java.util.*
 
 class FixedStack<E>(private val maxSize: Int = 100) : ArrayDeque<E>() {
