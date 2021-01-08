@@ -9,6 +9,7 @@ import dev.hikari.shiro
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
+import net.mamoe.mirai.event.events.MessageRecallEvent
 import net.mamoe.mirai.event.subscribeGroupMessages
 import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.FlashImage
@@ -28,6 +29,8 @@ fun handleMessages() {
     handleFriendMessages()
 
     handleGroupMessages()
+
+    markRecalledMessages()
 }
 
 private val db by lazy {
@@ -42,7 +45,7 @@ private val db by lazy {
     val database = Database.connect(dataSource)
     transaction(database) {
         addLogger(StdOutSqlLogger)
-        SchemaUtils.create(History)
+        SchemaUtils.createMissingTablesAndColumns(History)
     }
     database
 }
@@ -74,6 +77,7 @@ fun storeMessagesToDatabase() {
                 it[nick] = event.sender.nick
                 it[nameCard] = event.sender.nameCardOrNick
                 it[content] = messageContent
+                it[recalled] = 0
             }
         }
     }
@@ -94,6 +98,28 @@ fun handleGroupMessages() {
         "一言" {
             val hitokoto = Api.getHitokoto()
             group.sendMessage("${hitokoto.hitokoto}\n来自于:${hitokoto.from}")
+        }
+    }
+}
+
+fun markRecalledMessages() {
+    shiro.eventChannel.subscribeAlways<MessageRecallEvent> { event ->
+        if (event is MessageRecallEvent.FriendRecall) {
+            transaction(db) {
+                History.update({
+                    (History.qq eq event.operatorId) and (History.serverId eq event.messageIds.joinToString())
+                }) {
+                    it[History.recalled] = 1
+                }
+            }
+        } else if (event is MessageRecallEvent.GroupRecall) {
+            transaction(db) {
+                History.update({
+                    (History.groupQQ eq event.group.id) and (History.serverId eq event.messageIds.joinToString())
+                }) {
+                    it[History.recalled] = 1
+                }
+            }
         }
     }
 }

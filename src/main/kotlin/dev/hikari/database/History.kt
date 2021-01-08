@@ -10,4 +10,5 @@ object History : IntIdTable("history") {
     val content = text("content")
     val nameCard = varchar("name_card", 50)
     val nick = varchar("nick", 50)
+    val recalled = integer("recalled")
 }
