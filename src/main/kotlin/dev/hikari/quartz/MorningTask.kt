@@ -1,6 +1,6 @@
 package dev.hikari.quartz
 
-import dev.hikari.config
+import dev.hikari.config.ShiroConfig
 import dev.hikari.logger
 import dev.hikari.shiro
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,7 +18,7 @@ class MorningTask(
 ) : Job, CoroutineScope {
     override fun execute(context: JobExecutionContext?) {
         launch {
-            shiro.getGroup(config.testGroup)?.sendMessage("Good morning!")
+            shiro.getGroup(ShiroConfig.config.testGroup)?.sendMessage("Good morning!")
         }
     }
 }

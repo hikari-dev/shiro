@@ -3,9 +3,11 @@ package dev.hikari.receiver
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import dev.hikari.api.Api
-import dev.hikari.config
+import dev.hikari.config.ShiroConfig
 import dev.hikari.database.History
 import dev.hikari.shiro
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ticker
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
@@ -15,6 +17,7 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.FlashImage
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
+import net.mamoe.mirai.message.data.buildMessageChain
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.text.SimpleDateFormat
@@ -22,7 +25,7 @@ import java.text.SimpleDateFormat
 /**
  * Handle all the messages shiro received.
  */
-fun handleMessages() {
+suspend fun handleMessages() {
 
     storeMessagesToDatabase()
 
@@ -31,14 +34,16 @@ fun handleMessages() {
     handleGroupMessages()
 
     markRecalledMessages()
+
+    receiveTelegramMessageUpdates()
 }
 
 private val db by lazy {
     val config = HikariConfig().apply {
-        jdbcUrl = config.database.url
-        driverClassName = config.database.driverClassName
-        username = config.database.username
-        password = config.database.password
+        jdbcUrl = ShiroConfig.config.database.url
+        driverClassName = ShiroConfig.config.database.driverClassName
+        username = ShiroConfig.config.database.username
+        password = ShiroConfig.config.database.password
         maximumPoolSize = 10
     }
     val dataSource = HikariDataSource(config)
@@ -52,7 +57,7 @@ private val db by lazy {
 
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-fun storeMessagesToDatabase() {
+private fun storeMessagesToDatabase() {
     shiro.eventChannel.subscribeAlways<MessageEvent> { event ->
         val messageContent = buildString {
             for (msg in event.message) {
@@ -86,30 +91,39 @@ fun storeMessagesToDatabase() {
 /**
  * Handle all friend message event.
  */
-fun handleFriendMessages() {
+private fun handleFriendMessages() {
 
 }
 
 /**
  * Handle all group message event.
  */
-fun handleGroupMessages() {
+private fun handleGroupMessages() {
     shiro.eventChannel.subscribeGroupMessages {
+        always {
+            if (group.id == ShiroConfig.config.telegramBot.qqGroup) {
+                sendMessageToTelegramGroup(message.contentToString())
+            }
+        }
         "一言" {
             val hitokoto = Api.getHitokoto()
-            group.sendMessage("${hitokoto.hitokoto}\n来自于:${hitokoto.from}")
+            group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")
         }
     }
 }
 
-fun markRecalledMessages() {
+private fun sendMessageToTelegramGroup(message: String) {
+
+}
+
+private fun markRecalledMessages() {
     shiro.eventChannel.subscribeAlways<MessageRecallEvent> { event ->
         if (event is MessageRecallEvent.FriendRecall) {
             transaction(db) {
                 History.update({
                     (History.qq eq event.operatorId) and (History.serverId eq event.messageIds.joinToString())
                 }) {
-                    it[History.recalled] = 1
+                    it[recalled] = 1
                 }
             }
         } else if (event is MessageRecallEvent.GroupRecall) {
@@ -117,8 +131,26 @@ fun markRecalledMessages() {
                 History.update({
                     (History.groupQQ eq event.group.id) and (History.serverId eq event.messageIds.joinToString())
                 }) {
-                    it[History.recalled] = 1
+                    it[recalled] = 1
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ObsoleteCoroutinesApi::class)
+suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO + SupervisorJob()) {
+    if (ShiroConfig.config.telegramBot.telegramGroup == 0) return@withContext
+    val ticker = ticker(ShiroConfig.config.telegramBot.receiveInterval * 1000L, 0)
+    for (item in ticker) {
+        val updates = Api.getTelegramMessages(ShiroConfig.config.telegramBot.token)
+        if (updates.isEmpty()) continue
+        for (update in updates) {
+            if (update.message?.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
+                shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup)?.sendMessage(buildMessageChain {
+                    +"${update.message.from?.firstName}${update.message.from?.lastName}："
+                    +update.message.text
+                })
             }
         }
     }
