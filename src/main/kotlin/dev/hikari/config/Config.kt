@@ -4,16 +4,22 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Config(
-    val bot: BotConfig,
+    val qqBot: QQBotConfig,
+    val telegramBot: TelegramBotConfig,
     val database: DatabaseConfig,
     val testGroup: Long,
     val masterQQ: Long
 ) {
 
     @Serializable
-    data class BotConfig(
+    data class QQBotConfig(
         val qq: Long,
         val password: String
+    )
+
+    @Serializable
+    data class TelegramBotConfig(
+        val token: String
     )
 
     @Serializable

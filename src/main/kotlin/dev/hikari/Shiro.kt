@@ -1,6 +1,7 @@
 package dev.hikari
 
 import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import dev.hikari.config.Config
 import dev.hikari.quartz.startSchedule
 import dev.hikari.receiver.handleMessages
@@ -12,11 +13,11 @@ import java.io.File
 
 val config: Config by lazy {
     val configStr = File("shiroConfig.yml").readText()
-    Yaml.default.decodeFromString(Config.serializer(), configStr)
+    Yaml(configuration = YamlConfiguration(strictMode = false)).decodeFromString(Config.serializer(), configStr)
 }
 
 val shiro by lazy {
-    BotFactory.newBot(config.bot.qq, config.bot.password) {
+    BotFactory.newBot(config.qqBot.qq, config.qqBot.password) {
         fileBasedDeviceInfo()
         protocol = ANDROID_PAD
     }

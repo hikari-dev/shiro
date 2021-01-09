@@ -1,6 +1,7 @@
 package dev.hikari.api
 
 import dev.hikari.api.entity.Hitokoto
+import dev.hikari.api.entity.TelegramRsp
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*
@@ -19,7 +20,9 @@ object Api {
         return json.decodeFromString(Hitokoto.serializer(), rspStr)
     }
 
-    suspend fun getWeather() {
-
+    //https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/getMe
+    suspend fun getTelegramMessages(token: String): TelegramRsp {
+        val rspStr = httpClient.get<String>("https://api.telegram.org/bot$token/getMe")
+        return json.decodeFromString(TelegramRsp.serializer(), rspStr)
     }
 }
