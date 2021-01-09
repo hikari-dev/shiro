@@ -139,18 +139,20 @@ private fun markRecalledMessages() {
 }
 
 @OptIn(ObsoleteCoroutinesApi::class)
-suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO + SupervisorJob()) {
+suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO) {
     if (ShiroConfig.config.telegramBot.telegramGroup == 0) return@withContext
     val ticker = ticker(ShiroConfig.config.telegramBot.receiveInterval * 1000L, 0)
     for (item in ticker) {
-        val updates = Api.getTelegramMessages(ShiroConfig.config.telegramBot.token)
-        if (updates.isEmpty()) continue
-        for (update in updates) {
-            if (update.message?.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
-                shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup)?.sendMessage(buildMessageChain {
-                    +"${update.message.from?.firstName}${update.message.from?.lastName}："
-                    +update.message.text
-                })
+        launch(SupervisorJob()) {
+            val updates = Api.getTelegramMessages(ShiroConfig.config.telegramBot.token)
+            if (updates.isEmpty()) return@launch
+            for (update in updates) {
+                if (update.message?.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
+                    shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup)?.sendMessage(buildMessageChain {
+                        +"${update.message.from?.firstName}${update.message.from?.lastName}："
+                        +update.message.text
+                    })
+                }
             }
         }
     }
