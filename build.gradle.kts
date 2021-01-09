@@ -7,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
-group = "me"
+group = "dev.hikari"
 version = "0.0.1"
 
 repositories {

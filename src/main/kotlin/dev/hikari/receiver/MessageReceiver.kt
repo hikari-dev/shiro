@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import dev.hikari.api.Api
 import dev.hikari.config.ShiroConfig
 import dev.hikari.database.History
+import dev.hikari.logger
 import dev.hikari.shiro
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ticker
@@ -102,7 +103,7 @@ private fun handleGroupMessages() {
     shiro.eventChannel.subscribeGroupMessages {
         always {
             if (group.id == ShiroConfig.config.telegramBot.qqGroup) {
-                sendMessageToTelegramGroup(message.contentToString())
+                sendMessageToTelegramGroup(this)
             }
         }
         "一言" {
@@ -112,8 +113,9 @@ private fun handleGroupMessages() {
     }
 }
 
-private fun sendMessageToTelegramGroup(message: String) {
-
+private suspend fun sendMessageToTelegramGroup(event: GroupMessageEvent) {
+    val msg = "${event.sender.nameCardOrNick}：${event.message.contentToString()}"
+    Api.sendTelegramMessage(msg)
 }
 
 private fun markRecalledMessages() {
@@ -143,16 +145,18 @@ suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO) {
     if (ShiroConfig.config.telegramBot.telegramGroup == 0) return@withContext
     val ticker = ticker(ShiroConfig.config.telegramBot.receiveInterval * 1000L, 0)
     for (item in ticker) {
-        launch(SupervisorJob()) {
-            val updates = Api.getTelegramMessages(ShiroConfig.config.telegramBot.token)
-            if (updates.isEmpty()) return@launch
-            for (update in updates) {
-                if (update.message?.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
-                    shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup)?.sendMessage(buildMessageChain {
-                        +"${update.message.from?.firstName}${update.message.from?.lastName}："
-                        +update.message.text
-                    })
-                }
+        val updates = kotlin.runCatching {
+            Api.getTelegramMessage()
+        }.onFailure {
+            logger.error("sync telegram message error", it)
+        }.getOrNull()
+        if (updates.isNullOrEmpty()) continue
+        for (update in updates) {
+            if (update.message?.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
+                shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup)?.sendMessage(buildMessageChain {
+                    +"${update.message.from?.firstName}${update.message.from?.lastName}："
+                    +update.message.text
+                })
             }
         }
     }
