@@ -20,12 +20,11 @@ object Api {
                 connectTimeout(8, TimeUnit.SECONDS)
                 readTimeout(8, TimeUnit.SECONDS)
 
-                proxy(
-                    Proxy(
-                        Proxy.Type.SOCKS,
-                        InetSocketAddress(ShiroConfig.config.proxy.hostname, ShiroConfig.config.proxy.port)
-                    )
-                )
+                val proxyHostName = ShiroConfig.config.proxy.hostname
+                val proxyPort = ShiroConfig.config.proxy.port
+                if (proxyHostName.isNotEmpty() && proxyPort != 0) {
+                    proxy(Proxy(Proxy.Type.SOCKS, InetSocketAddress(proxyHostName, proxyPort)))
+                }
             }
         }
     }
