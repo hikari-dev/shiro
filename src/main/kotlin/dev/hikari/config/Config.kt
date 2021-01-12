@@ -47,6 +47,7 @@ data class Config(
     @Serializable
     data class Proxy(
         val hostname: String?,
-        val port: Int?
+        val port: Int?,
+        val type: Int?
     )
 }
