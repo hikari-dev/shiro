@@ -22,7 +22,7 @@ object Api {
 
                 val proxyHostName = ShiroConfig.config.proxy.hostname
                 val proxyPort = ShiroConfig.config.proxy.port
-                if (proxyHostName.isNotEmpty() && proxyPort != 0) {
+                if (proxyHostName != null && proxyPort != null) {
                     proxy(Proxy(Proxy.Type.SOCKS, InetSocketAddress(proxyHostName, proxyPort)))
                 }
             }

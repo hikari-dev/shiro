@@ -30,23 +30,23 @@ data class Config(
 
     @Serializable
     data class TelegramBotConfig(
-        val token: String,
-        val qqGroup: Long,
-        val telegramGroup: Int,
-        val receiveInterval: Int
+        val token: String?,
+        val qqGroup: Long?,
+        val telegramGroup: Int?,
+        val receiveInterval: Int?
     )
 
     @Serializable
     data class DatabaseConfig(
-        val url: String,
-        val driverClassName: String,
-        val username: String,
-        val password: String
+        val url: String?,
+        val driverClassName: String?,
+        val username: String?,
+        val password: String?
     )
 
     @Serializable
     data class Proxy(
-        val hostname: String,
-        val port: Int
+        val hostname: String?,
+        val port: Int?
     )
 }

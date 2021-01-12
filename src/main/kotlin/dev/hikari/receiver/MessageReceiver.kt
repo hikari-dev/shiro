@@ -7,8 +7,10 @@ import dev.hikari.config.ShiroConfig
 import dev.hikari.database.History
 import dev.hikari.logger
 import dev.hikari.shiro
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ticker
+import kotlinx.coroutines.withContext
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
@@ -28,15 +30,19 @@ import java.text.SimpleDateFormat
  */
 suspend fun handleMessages() {
 
-    storeMessagesToDatabase()
-
     handleFriendMessages()
 
     handleGroupMessages()
 
-    markRecalledMessages()
+    if (checkDatabaseConfigValid()) {
+        storeMessagesToDatabase()
+        markRecalledMessages()
+    }
 
-    receiveTelegramMessageUpdates()
+    if (checkTelegramConfigValid()) {
+        receiveTelegramMessageUpdates()
+    }
+
 }
 
 private val db by lazy {
@@ -142,8 +148,7 @@ private fun markRecalledMessages() {
 
 @OptIn(ObsoleteCoroutinesApi::class)
 suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO) {
-    if (ShiroConfig.config.telegramBot.telegramGroup == 0) return@withContext
-    val ticker = ticker(ShiroConfig.config.telegramBot.receiveInterval * 1000L, 0)
+    val ticker = ticker(ShiroConfig.config.telegramBot.receiveInterval!! * 1000L, 0)
     for (item in ticker) {
         val updates = kotlin.runCatching {
             Api.getTelegramMessage()
@@ -152,12 +157,22 @@ suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO) {
         }.getOrNull()
         if (updates.isNullOrEmpty()) continue
         for (update in updates) {
-            if (update.message?.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
-                shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup)?.sendMessage(buildMessageChain {
+            if (update.message != null && update.message.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
+                shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup!!)?.sendMessage(buildMessageChain {
                     +"${update.message.from?.firstName}${update.message.from?.lastName}："
                     +update.message.text
                 })
             }
         }
     }
+}
+
+fun checkDatabaseConfigValid(): Boolean {
+    val dbConfig = ShiroConfig.config.database
+    return !(dbConfig.username == null || dbConfig.password == null || dbConfig.driverClassName == null || dbConfig.url == null)
+}
+
+fun checkTelegramConfigValid(): Boolean {
+    val tgConfig = ShiroConfig.config.telegramBot
+    return !(tgConfig.token == null || tgConfig.telegramGroup == null || tgConfig.qqGroup == null || tgConfig.receiveInterval == null)
 }
