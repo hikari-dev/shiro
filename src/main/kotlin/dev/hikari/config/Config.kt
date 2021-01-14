@@ -16,7 +16,6 @@ object ShiroConfig {
 data class Config(
     val qqBot: QQBotConfig,
     val database: DatabaseConfig,
-    val proxy: Proxy,
     val testGroup: Long,
     val masterQQ: Long
 ) {
@@ -33,12 +32,5 @@ data class Config(
         val driverClassName: String?,
         val username: String?,
         val password: String?
-    )
-
-    @Serializable
-    data class Proxy(
-        val hostname: String?,
-        val port: Int?,
-        val type: Int?
     )
 }
