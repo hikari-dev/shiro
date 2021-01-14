@@ -14,14 +14,14 @@ object ShiroConfig {
 
 @Serializable
 data class Config(
-    val qqBot: QQBotConfig,
+    val bot: BotConfig,
     val database: DatabaseConfig,
     val testGroup: Long,
     val masterQQ: Long
 ) {
 
     @Serializable
-    data class QQBotConfig(
+    data class BotConfig(
         val qq: Long,
         val password: String
     )
