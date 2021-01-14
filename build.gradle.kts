@@ -13,6 +13,7 @@ version = "0.0.1"
 repositories {
     mavenCentral()
     jcenter()
+    maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
 
 tasks.withType<KotlinJvmCompile> {
@@ -40,6 +41,7 @@ dependencies {
 
     implementation("com.charleskorn.kaml:kaml:0.26.0")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")
 
     val exposedVersion = "0.28.1"

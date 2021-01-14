@@ -15,7 +15,6 @@ object ShiroConfig {
 @Serializable
 data class Config(
     val qqBot: QQBotConfig,
-    val telegramBot: TelegramBotConfig,
     val database: DatabaseConfig,
     val proxy: Proxy,
     val testGroup: Long,
@@ -26,14 +25,6 @@ data class Config(
     data class QQBotConfig(
         val qq: Long,
         val password: String
-    )
-
-    @Serializable
-    data class TelegramBotConfig(
-        val token: String?,
-        val qqGroup: Long?,
-        val telegramGroup: Int?,
-        val receiveInterval: Int?
     )
 
     @Serializable

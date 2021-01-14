@@ -5,12 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import dev.hikari.api.Api
 import dev.hikari.config.ShiroConfig
 import dev.hikari.database.History
-import dev.hikari.logger
 import dev.hikari.shiro
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.withContext
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
@@ -20,7 +15,6 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.FlashImage
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
-import net.mamoe.mirai.message.data.buildMessageChain
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.text.SimpleDateFormat
@@ -28,7 +22,7 @@ import java.text.SimpleDateFormat
 /**
  * Handle all the messages shiro received.
  */
-suspend fun handleMessages() {
+fun handleMessages() {
 
     handleFriendMessages()
 
@@ -37,10 +31,6 @@ suspend fun handleMessages() {
     if (checkDatabaseConfigValid()) {
         storeMessagesToDatabase()
         markRecalledMessages()
-    }
-
-    if (checkTelegramConfigValid()) {
-        receiveTelegramMessageUpdates()
     }
 
 }
@@ -107,21 +97,11 @@ private fun handleFriendMessages() {
  */
 private fun handleGroupMessages() {
     shiro.eventChannel.subscribeGroupMessages {
-        always {
-            if (group.id == ShiroConfig.config.telegramBot.qqGroup) {
-                sendMessageToTelegramGroup(this)
-            }
-        }
         "一言" {
             val hitokoto = Api.getHitokoto()
             group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")
         }
     }
-}
-
-private suspend fun sendMessageToTelegramGroup(event: GroupMessageEvent) {
-    val msg = "${event.sender.nameCardOrNick}：${event.message.contentToString()}"
-    Api.sendTelegramMessage(msg)
 }
 
 private fun markRecalledMessages() {
@@ -146,33 +126,7 @@ private fun markRecalledMessages() {
     }
 }
 
-@OptIn(ObsoleteCoroutinesApi::class)
-suspend fun receiveTelegramMessageUpdates() = withContext(Dispatchers.IO) {
-    val ticker = ticker(ShiroConfig.config.telegramBot.receiveInterval!! * 1000L, 0)
-    for (item in ticker) {
-        val updates = kotlin.runCatching {
-            Api.getTelegramMessage()
-        }.onFailure {
-            logger.error("sync telegram message error", it)
-        }.getOrNull()
-        if (updates.isNullOrEmpty()) continue
-        for (update in updates) {
-            if (update.message != null && update.message.chat?.id == ShiroConfig.config.telegramBot.telegramGroup) {
-                shiro.getGroup(ShiroConfig.config.telegramBot.qqGroup!!)?.sendMessage(buildMessageChain {
-                    +"${update.message.from?.firstName}${update.message.from?.lastName}："
-                    +update.message.text
-                })
-            }
-        }
-    }
-}
-
 fun checkDatabaseConfigValid(): Boolean {
     val dbConfig = ShiroConfig.config.database
     return !(dbConfig.username == null || dbConfig.password == null || dbConfig.driverClassName == null || dbConfig.url == null)
-}
-
-fun checkTelegramConfigValid(): Boolean {
-    val tgConfig = ShiroConfig.config.telegramBot
-    return !(tgConfig.token == null || tgConfig.telegramGroup == null || tgConfig.qqGroup == null || tgConfig.receiveInterval == null)
 }
