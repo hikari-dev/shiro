@@ -9,7 +9,7 @@ import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.utils.BotConfiguration.MiraiProtocol.ANDROID_PAD
 
 val shiro by lazy {
-    BotFactory.newBot(ShiroConfig.config.qqBot.qq, ShiroConfig.config.qqBot.password) {
+    BotFactory.newBot(ShiroConfig.config.bot.qq, ShiroConfig.config.bot.password) {
         fileBasedDeviceInfo()
         protocol = ANDROID_PAD
     }
