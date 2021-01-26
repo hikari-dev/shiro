@@ -101,6 +101,11 @@ private fun handleGroupMessages() {
             val hitokoto = Api.getHitokoto()
             group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")
         }
+
+        startsWith("点歌") {
+            // TODO: 2021/1/26 MusicShare
+
+        }
     }
 }
 
