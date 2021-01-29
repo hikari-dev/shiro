@@ -102,9 +102,9 @@ private fun handleGroupMessages() {
             group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")
         }
 
-        startsWith("点歌") {
-            // TODO: 2021/1/26 MusicShare
-
+        startsWith("点歌") reply { cmd ->
+            val qqMusicSearch = Api.searchQQMusic(cmd)
+            println(qqMusicSearch)
         }
     }
 }
