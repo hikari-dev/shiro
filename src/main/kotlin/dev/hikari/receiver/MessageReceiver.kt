@@ -11,9 +11,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.event.events.MessageRecallEvent
 import net.mamoe.mirai.event.subscribeGroupMessages
-import net.mamoe.mirai.message.data.At
-import net.mamoe.mirai.message.data.FlashImage
-import net.mamoe.mirai.message.data.Image
+import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -102,9 +100,14 @@ private fun handleGroupMessages() {
             group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")
         }
 
-        startsWith("点歌") reply { cmd ->
-            val qqMusicSearch = Api.searchQQMusic(cmd)
-            println(qqMusicSearch)
+        startsWith("点歌") {
+            val songName = message.content.removePrefix("点歌").trim()
+//            val qqMusicSearch = Api.searchQQMusic(cmd)
+            val fake = SimpleServiceMessage(
+                0,
+                "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?><msg serviceID=\"2\" templateID=\"1\" action=\"web\" brief=\"[分享] 花びらたちのマーチ\" sourceMsgId=\"0\" url=\"https://y.qq.com/n/yqq/song/001JMbsq4KHvmM.html\" flag=\"0\" adverSign=\"0\" multiMsgFlag=\"0\"><item layout=\"2\"><audio cover=\"http://y.gtimg.cn/music/photo_new/T002R300x300M000001UdhE42Q0wYz_1.jpg?max_age=2592000\" src=\"http://isure.stream.qqmusic.qq.com/M800003G0E3Q3p9YgX.mp3?guid=9146710&amp;vkey=B26F5D65ADDE629AB201E2F916AE1997A324EBBD13262C57B12A1715854E2C3AB8E52BDDE26E6B2CE0182F60E0EB47018A6E96B7B3C496AD&amp;uin=956581739&amp;fromtag=66\" /><title>花びらたちのマーチ</title><summary>Aimer</summary></item><source name=\"QQ音乐\" icon=\"https://i.gtimg.cn/open/app_icon/01/07/98/56/1101079856_100_m.png?date=20200503\" url=\"http://web.p.qq.com/qqmpmobile/aio/app.html?id=1101079856\" action=\"app\" a_actionData=\"com.tencent.qqmusic\" i_actionData=\"tencent1101079856://\" appid=\"1101079856\" /></msg>"
+            )
+
         }
     }
 }
