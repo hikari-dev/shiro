@@ -1,10 +1,9 @@
 package dev.hikari.receiver
 
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import dev.hikari.api.Api
 import dev.hikari.config.ShiroConfig
 import dev.hikari.database.History
+import dev.hikari.database.database
 import dev.hikari.shiro
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -13,8 +12,10 @@ import net.mamoe.mirai.event.events.MessageRecallEvent
 import net.mamoe.mirai.event.subscribeGroupMessages
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.text.SimpleDateFormat
 
 /**
@@ -33,23 +34,6 @@ fun handleMessages() {
 
 }
 
-private val db by lazy {
-    val config = HikariConfig().apply {
-        jdbcUrl = ShiroConfig.config.database.url
-        driverClassName = ShiroConfig.config.database.driverClassName
-        username = ShiroConfig.config.database.username
-        password = ShiroConfig.config.database.password
-        maximumPoolSize = 10
-    }
-    val dataSource = HikariDataSource(config)
-    val database = Database.connect(dataSource)
-    transaction(database) {
-        addLogger(StdOutSqlLogger)
-        SchemaUtils.createMissingTablesAndColumns(History)
-    }
-    database
-}
-
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
 private fun storeMessagesToDatabase() {
@@ -66,7 +50,7 @@ private fun storeMessagesToDatabase() {
                 )
             }
         }
-        transaction(db) {
+        transaction(database) {
             History.insert {
                 it[serverId] = event.source.ids.joinToString()
                 it[qq] = event.sender.id
@@ -115,7 +99,7 @@ private fun handleGroupMessages() {
 private fun markRecalledMessages() {
     shiro.eventChannel.subscribeAlways<MessageRecallEvent> { event ->
         if (event is MessageRecallEvent.FriendRecall) {
-            transaction(db) {
+            transaction(database) {
                 History.update({
                     (History.qq eq event.operatorId) and (History.serverId eq event.messageIds.joinToString())
                 }) {
@@ -123,7 +107,7 @@ private fun markRecalledMessages() {
                 }
             }
         } else if (event is MessageRecallEvent.GroupRecall) {
-            transaction(db) {
+            transaction(database) {
                 History.update({
                     (History.groupQQ eq event.group.id) and (History.serverId eq event.messageIds.joinToString())
                 }) {
