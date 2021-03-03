@@ -51,4 +51,6 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.22")
     implementation("com.zaxxer", "HikariCP", "4.0.2")
 
+    implementation("com.github.ajalt.clikt:clikt:3.1.0")
+
 }
