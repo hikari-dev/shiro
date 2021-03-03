@@ -37,9 +37,9 @@ tasks.withType<Jar> {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("net.mamoe", "mirai-core", "2.4.1")
+    implementation("net.mamoe", "mirai-core", "2.4.2")
 
-    implementation("com.charleskorn.kaml:kaml:0.26.0")
+    implementation("com.charleskorn.kaml:kaml:0.28.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")
