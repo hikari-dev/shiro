@@ -36,7 +36,9 @@ object Api {
     }
 
     suspend fun getZuAnSentence(): String {
-        return httpClient.get("https://zuanbot.com/api.php?lang=zh_cn")
+        return httpClient.get("https://zuanbot.com/api.php?lang=zh_cn") {
+            header("Referer", "https://zuanbot.com/")
+        }
     }
 
 }

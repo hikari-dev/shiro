@@ -26,7 +26,8 @@ class ZuAnCommand(groupQQ: Long) : CliktCommand(), CoroutineScope {
     override fun run() {
         repeat(t) {
             launch {
-                shiro.getGroup(g)?.sendMessage(At(m) + "\n" + Api.getZuAnSentence())
+                val nmsl = Api.getZuAnSentence()
+                shiro.getGroup(g)?.sendMessage(At(m) + "\n" + nmsl)
             }
         }
     }
