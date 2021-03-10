@@ -96,8 +96,9 @@ private fun handleGroupMessages() {
 //
 //        }
 
-        startsWith("boom") { cmd ->
-            ZuAnCommand(group.id).main(cmd.split(" "))
+        startsWith("boom") {
+            val raw = message.contentToString()
+            ZuAnCommand.parse(raw.split(" ").drop(1), group.id)
         }
     }
 }
