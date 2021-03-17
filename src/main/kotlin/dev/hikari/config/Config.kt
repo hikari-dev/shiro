@@ -16,7 +16,6 @@ object ShiroConfig {
 data class Config(
     val bot: BotConfig,
     val database: DatabaseConfig,
-    val testGroup: Long,
     val masterQQ: Long
 ) {
 
