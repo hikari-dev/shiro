@@ -96,6 +96,10 @@ private fun handleGroupMessages() {
 //
 //        }
 
+//        always {
+//
+//        }
+
         startsWith("boom") {
             val raw = message.contentToString()
             ZuAnCommand.parse(raw.split(" ").drop(1), group.id)
