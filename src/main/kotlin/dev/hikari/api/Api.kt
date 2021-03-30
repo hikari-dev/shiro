@@ -41,4 +41,9 @@ object Api {
         }
     }
 
+    suspend fun getBilibiliDynamic() {
+        //https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?visitor_uid=1111111111&offset_dynamic_id=0&need_top=0&host_uid=
+        return
+    }
+
 }

@@ -39,7 +39,7 @@ dependencies {
 
     implementation("net.mamoe", "mirai-core", "2.5.1")
 
-    implementation("com.charleskorn.kaml:kaml:0.28.3")
+    implementation("com.charleskorn.kaml:kaml:0.29.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")
