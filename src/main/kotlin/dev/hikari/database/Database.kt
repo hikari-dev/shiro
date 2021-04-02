@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object DbSettings {
+
     val db: Database by lazy {
         val config = HikariConfig().apply {
             jdbcUrl = ShiroConfig.config.database.url
@@ -22,6 +23,11 @@ object DbSettings {
             SchemaUtils.createMissingTablesAndColumns(History)
         }
         db
+    }
+
+    val configValid: Boolean by lazy {
+        val dbConfig = ShiroConfig.config.database
+        !(dbConfig.username == null || dbConfig.password == null || dbConfig.driverClassName == null || dbConfig.url == null)
     }
 }
 

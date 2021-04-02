@@ -3,8 +3,10 @@ package dev.hikari.receiver
 import dev.hikari.api.Api
 import dev.hikari.command.ZuAnCommand
 import dev.hikari.config.ShiroConfig
+import dev.hikari.database.DbSettings
 import dev.hikari.database.History
 import dev.hikari.database.database
+import dev.hikari.database.execAndMap
 import dev.hikari.shiro
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -15,6 +17,7 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.FlashImage
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
+import net.mamoe.mirai.message.data.buildMessageChain
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -32,7 +35,7 @@ fun handleMessages() {
 
     handleGroupMessages()
 
-    if (checkDatabaseConfigValid()) {
+    if (DbSettings.configValid) {
         storeMessagesToDatabase()
         markRecalledMessages()
     }
@@ -104,6 +107,26 @@ private fun handleGroupMessages() {
             val raw = message.contentToString()
             ZuAnCommand.parse(raw.split(" ").drop(1), group.id)
         }
+
+
+        sentBy(ShiroConfig.config.masterQQ) {
+            startsWith("sql") { sql ->
+                var results: List<String>? = null
+                transaction(database) {
+                    results = sql.execAndMap { resultSet ->
+                        resultSet.getString("content")
+                    }
+
+                }
+                if (results.isNullOrEmpty()) return@startsWith
+                group.sendMessage(buildMessageChain {
+                    add("查询结果：")
+                    for (result in results!!) {
+                        add("\r\n" + result)
+                    }
+                })
+            }
+        }
     }
 }
 
@@ -127,9 +150,4 @@ private fun markRecalledMessages() {
             }
         }
     }
-}
-
-fun checkDatabaseConfigValid(): Boolean {
-    val dbConfig = ShiroConfig.config.database
-    return !(dbConfig.username == null || dbConfig.password == null || dbConfig.driverClassName == null || dbConfig.url == null)
 }
