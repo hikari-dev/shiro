@@ -13,11 +13,8 @@ import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.event.events.MessageRecallEvent
 import net.mamoe.mirai.event.subscribeGroupMessages
-import net.mamoe.mirai.message.data.At
-import net.mamoe.mirai.message.data.FlashImage
-import net.mamoe.mirai.message.data.Image
+import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
-import net.mamoe.mirai.message.data.buildMessageChain
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -109,16 +106,15 @@ private fun handleGroupMessages() {
         }
 
 
-        sentBy(ShiroConfig.config.masterQQ) {
-            startsWith("sql") { sql ->
-                var results: List<String>? = null
-                transaction(database) {
-                    results = sql.execAndMap { resultSet ->
-                        resultSet.getString("content")
-                    }
-
+        (sentBy(ShiroConfig.config.masterQQ) and startsWith("sql")) {
+            val sql = message.content.removePrefix("sql").trim()
+            var results: List<String>? = null
+            transaction(database) {
+                results = sql.execAndMap { resultSet ->
+                    resultSet.getString("content")
                 }
-                if (results.isNullOrEmpty()) return@startsWith
+            }
+            if (!results.isNullOrEmpty()) {
                 group.sendMessage(buildMessageChain {
                     add("查询结果：")
                     for (result in results!!) {
