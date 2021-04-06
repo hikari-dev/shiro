@@ -105,7 +105,6 @@ private fun handleGroupMessages() {
             ZuAnCommand.parse(raw.split(" ").drop(1), group.id)
         }
 
-
         (sentBy(ShiroConfig.config.masterQQ) and startsWith("sql")) {
             val sql = message.content.removePrefix("sql").trim()
             var results: List<String>? = null
