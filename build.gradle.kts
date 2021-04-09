@@ -37,14 +37,14 @@ tasks.withType<Jar> {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("net.mamoe", "mirai-core", "2.5.1")
+    implementation("net.mamoe", "mirai-core", "2.5.2")
 
     implementation("com.charleskorn.kaml:kaml:0.29.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")
 
-    val exposedVersion = "0.29.1"
+    val exposedVersion = "0.30.1"
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
