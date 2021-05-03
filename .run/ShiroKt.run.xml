@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="ShiroKt" type="JetRunConfigurationType" nameIsGenerated="true">
+        <option name="MAIN_CLASS_NAME" value="dev.hikari.ShiroKt"/>
+        <module name="shiro.main"/>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+        </method>
+    </configuration>
+</component>

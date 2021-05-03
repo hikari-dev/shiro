@@ -2,5 +2,5 @@
 .idea
 build
 device.json
-shiroConfig.yml
 cache
+ShiroConfig.yml
