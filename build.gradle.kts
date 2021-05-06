@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
-    val kotlinVersion = "1.4.32"
+    val kotlinVersion = "1.5.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.github.johnrengelman.shadow") version "7.0.0"
@@ -18,7 +18,6 @@ repositories {
 
 tasks.withType<KotlinJvmCompile> {
     kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.useIR = true
 }
 
 tasks.withType<Jar> {
