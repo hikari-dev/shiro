@@ -4,7 +4,7 @@ plugins {
     val kotlinVersion = "1.4.32"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "dev.hikari"
