@@ -20,6 +20,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.text.SimpleDateFormat
+import java.util.*
 
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
@@ -100,11 +101,13 @@ private fun handleGroupMessages() {
 //
 //        }
 
+        //祖安宝典
         startsWith("boom") {
             val raw = message.contentToString()
             ZuAnCommand.parse(raw.split(" ").drop(1), group.id)
         }
 
+        //查询聊天记录
         (sentBy(ShiroConfig.config.masterQQ) and startsWith("sudo")) {
             val sql = message.content.removePrefix("sudo").trim()
             var results: List<String>? = null
@@ -123,6 +126,9 @@ private fun handleGroupMessages() {
             }
         }
 
+        startsWith("百度") { query ->
+            group.sendMessage("https://lmbtfy.tk/?q=${Base64.getEncoder().encodeToString(query.toByteArray())}")
+        }
 
     }
 }
