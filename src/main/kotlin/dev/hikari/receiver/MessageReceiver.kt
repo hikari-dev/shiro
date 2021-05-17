@@ -83,6 +83,7 @@ private fun handleFriendMessages() {
  */
 private fun handleGroupMessages() {
     shiro.eventChannel.subscribeGroupMessages {
+
         "一言" {
             val hitokoto = Api.getHitokoto()
             group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")

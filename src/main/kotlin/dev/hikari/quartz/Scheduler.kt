@@ -13,13 +13,25 @@ private val scheduler = StdSchedulerFactory().scheduler
  * @see <a href="https://github.com/quartz-scheduler/quartz/blob/master/docs/tutorials/crontrigger.md">CronTrigger Tutorial</a>
  */
 fun startSchedule() {
-    val job = JobBuilder.newJob(MorningTask::class.java)
+    val morningJob = JobBuilder.newJob(MorningTask::class.java)
         .withIdentity("MorningTask")
         .build()
-    val trigger = TriggerBuilder.newTrigger()
+    val morningTrigger = TriggerBuilder.newTrigger()
         .withIdentity("MorningTrigger")
         .withSchedule(CronScheduleBuilder.cronSchedule("00 00 08 * * ?"))
         .build()
-    scheduler.scheduleJob(job, trigger)
+    val moYuReminderJob = JobBuilder.newJob(MoYuReminderTask::class.java)
+        .withIdentity("MoYuTask")
+        .build()
+    val moYuTrigger = TriggerBuilder.newTrigger()
+        .withIdentity("MoYuTrigger")
+        .withSchedule(CronScheduleBuilder.cronSchedule("00 00 15 * * ?"))
+        .build()
+    scheduler.scheduleJobs(
+        mapOf(
+            morningJob to setOf(morningTrigger),
+            moYuReminderJob to setOf(moYuTrigger)
+        ), false
+    )
     scheduler.start()
 }
