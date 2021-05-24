@@ -40,7 +40,6 @@ object Api {
     suspend fun getQQMusicPlayUrl(mid: String): String {
         val rspStr =
             httpClient.get<String>("https://u.y.qq.com/cgi-bin/musicu.fcg?data={\"req\": {\"module\": \"CDN.SrfCdnDispatchServer\", \"method\": \"GetCdnDispatch\", \"param\": {\"guid\": \"3982823384\", \"calltype\": 0, \"userip\": \"\"}}, \"req_0\": {\"module\": \"vkey.GetVkeyServer\", \"method\": \"CgiGetVkey\", \"param\": {\"guid\": \"3982823384\", \"songmid\": [\"$mid\"], \"songtype\": [0], \"uin\": \"0\", \"loginflag\": 1, \"platform\": \"20\"}}, \"comm\": {\"uin\": 0, \"format\": \"json\", \"ct\": 24, \"cv\": 0}}")
-        println("play music response -> $rspStr")
         val qqMusicPlay = json.decodeFromString(QQMusicPlay.serializer(), rspStr)
         return "https://isure.stream.qqmusic.qq.com/${qqMusicPlay.req_0.data.midurlinfo[0].purl}"
     }
