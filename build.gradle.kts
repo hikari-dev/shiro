@@ -32,6 +32,10 @@ tasks.withType<Jar> {
     }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation(kotlin("stdlib"))
 
@@ -48,5 +52,11 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
     implementation("mysql:mysql-connector-java:8.0.25")
     implementation("com.zaxxer", "HikariCP", "4.0.2")
+
+    implementation(kotlin("test"))
+    implementation(kotlin("test-junit5"))
+    implementation(kotlin("test-common"))
+    implementation(kotlin("test-annotations-common"))
+
 
 }

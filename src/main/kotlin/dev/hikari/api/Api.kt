@@ -1,6 +1,7 @@
 package dev.hikari.api
 
 import dev.hikari.api.entity.Hitokoto
+import dev.hikari.api.entity.QQMusicPlay
 import dev.hikari.api.entity.QQMusicSearch
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
@@ -18,7 +19,8 @@ object Api {
             }
         }
     }
-    private val json = Json {
+
+    val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
     }
@@ -29,10 +31,18 @@ object Api {
     }
 
     suspend fun searchQQMusic(keyword: String): QQMusicSearch {
-        val rspStr = httpClient.get<String>("https://c.y.qq.com/soso/fcgi-bin/music_search_new_platform?w=$keyword")
+        val rspStr = httpClient.get<String>("https://c.y.qq.com/soso/fcgi-bin/client_search_cp?w=$keyword")
             .removePrefix("callback(")
             .removeSuffix(")")
         return json.decodeFromString(QQMusicSearch.serializer(), rspStr)
+    }
+
+    suspend fun getQQMusicPlayUrl(mid: String): String {
+        val rspStr =
+            httpClient.get<String>("https://u.y.qq.com/cgi-bin/musicu.fcg?data={\"req\": {\"module\": \"CDN.SrfCdnDispatchServer\", \"method\": \"GetCdnDispatch\", \"param\": {\"guid\": \"3982823384\", \"calltype\": 0, \"userip\": \"\"}}, \"req_0\": {\"module\": \"vkey.GetVkeyServer\", \"method\": \"CgiGetVkey\", \"param\": {\"guid\": \"3982823384\", \"songmid\": [\"$mid\"], \"songtype\": [0], \"uin\": \"0\", \"loginflag\": 1, \"platform\": \"20\"}}, \"comm\": {\"uin\": 0, \"format\": \"json\", \"ct\": 24, \"cv\": 0}}")
+        println("play music response -> $rspStr")
+        val qqMusicPlay = json.decodeFromString(QQMusicPlay.serializer(), rspStr)
+        return "https://isure.stream.qqmusic.qq.com/${qqMusicPlay.req_0.data.midurlinfo[0].purl}"
     }
 
     suspend fun getZuAnSentence(): String {

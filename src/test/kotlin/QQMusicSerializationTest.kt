@@ -1,0 +1,15 @@
+import dev.hikari.api.Api
+import dev.hikari.api.entity.QQMusicPlay
+import kotlin.test.Test
+
+internal class QQMusicSerializationTest {
+
+    @Test
+    fun `test json serialization`() {
+        val json = """
+            {"code":0,"ts":1621842971888,"start_ts":1621842971880,"req":{"code":0,"data":{ "expiration": 86400, "freeflowsip": [ "http:\/\/58.215.114.13\/amobile.music.tc.qq.com\/", "http:\/\/58.215.114.14\/amobile.music.tc.qq.com\/", "http:\/\/58.215.114.15\/amobile.music.tc.qq.com\/" ], "keepalivefile": "C400004TsFuW2mZbRR.m4a?guid=3982823384&vkey=1F532F282770D0EE3731F9EE5CD97B8DAB04F637D5AED3761E6D9D3D80EA7FD3596EA5B2C1058200CDD3B0C6E64CDE031C2F61BBA1A34362&uin=0&fromtag=3", "msg": "ok", "retcode": 0, "servercheck": "881aae122c4c44f372a102ce104698b1", "sip": [ "http:\/\/58.215.114.13\/amobile.music.tc.qq.com\/", "http:\/\/ws.stream.qqmusic.qq.com\/", "http:\/\/isure.stream.qqmusic.qq.com\/", "http:\/\/58.215.114.14\/amobile.music.tc.qq.com\/", "http:\/\/58.215.114.15\/amobile.music.tc.qq.com\/" ], "testfile2g": "C400003mAan70zUy5O.m4a?guid=3982823384&vkey=83859B3C6FF366AE0D5C4EBAA9481945692AAC822807BD57C1C5F2ACCD3AFA32A6B83525A48E90F66858A39AF80FC6AFC63FB8A45F1CCB7E&uin=0&fromtag=3", "testfilewifi": "C400003mAan70zUy5O.m4a?guid=3982823384&vkey=83859B3C6FF366AE0D5C4EBAA9481945692AAC822807BD57C1C5F2ACCD3AFA32A6B83525A48E90F66858A39AF80FC6AFC63FB8A45F1CCB7E&uin=0&fromtag=3", "uin": "", "userip": "49.78.100.223", "vkey": "FEBF6AC64C8ED53E43805DC4A63DB88FE79BFF5F589FF9B010669CDAC2BCDDA41D5D3FD72C095CEC08CCA6C70DCA02026859C56660C144A6" }},"req_0":{"code":0,"data":{"uin":"","retcode":0,"verify_type":0,"login_key":"","msg":"49.78.100.223","sip":["http://ws.stream.qqmusic.qq.com/","http://isure.stream.qqmusic.qq.com/"],"thirdip":["",""],"testfile2g":"C400003mAan70zUy5O.m4a?guid=3982823384\u0026vkey=DEB0CA6D0E70BB168A967FB4AFD96A8A087BF81A41B0E0BADB8A32933B657ACE7B67A8107EC941D5115C45C000D79D2086F357085C7DE39E\u0026uin=\u0026fromtag=3","testfilewifi":"C400003mAan70zUy5O.m4a?guid=3982823384\u0026vkey=DEB0CA6D0E70BB168A967FB4AFD96A8A087BF81A41B0E0BADB8A32933B657ACE7B67A8107EC941D5115C45C000D79D2086F357085C7DE39E\u0026uin=\u0026fromtag=3","midurlinfo":[{"songmid":"003KtYhg4frNXC","filename":"C4000044M6Un0RXph2.m4a","purl":"","errtype":"","p2pfromtag":0,"qmdlfromtag":0,"common_downfromtag":0,"vip_downfromtag":0,"pdl":0,"premain":0,"hisdown":0,"hisbuy":0,"uiAlert":0,"isbuy":0,"pneedbuy":0,"pneed":0,"isonly":0,"onecan":0,"result":104003,"tips":"","opi48kurl":"","opi96kurl":"","opi192kurl":"","opiflackurl":"","opi128kurl":"","opi192koggurl":"","wififromtag":"","flowfromtag":"","wifiurl":"","flowurl":"","vkey":"","opi30surl":"","ekey":"","auth_switch":17405185,"subcode":0}],"servercheck":"881aae122c4c44f372a102ce104698b1","expiration":80400}}}
+        """.trimIndent()
+        val qqMusicPlay = Api.json.decodeFromString(QQMusicPlay.serializer(), json)
+        println(qqMusicPlay)
+    }
+}

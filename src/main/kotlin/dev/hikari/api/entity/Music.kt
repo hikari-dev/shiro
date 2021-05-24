@@ -21,5 +21,36 @@ data class SongList(
 
 @Serializable
 data class Song(
-    val f: String
+    val albummid: String,
+    val songmid: String,
+    val songname: String,
+    val singer: List<Singer>,
+    val media_mid: String,
+    val songid: Int
+)
+
+@Serializable
+data class Singer(
+    val name: String
+)
+
+@Serializable
+data class QQMusicPlay(
+    val code: Int,
+    val req_0: Req0
+)
+
+@Serializable
+data class Req0(
+    val data: Data
+)
+
+@Serializable
+data class Data(
+    val midurlinfo: List<UrlInfo>
+)
+
+@Serializable
+data class UrlInfo(
+    val purl: String
 )
