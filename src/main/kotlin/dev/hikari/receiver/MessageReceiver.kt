@@ -87,7 +87,7 @@ private fun handleGroupMessages() {
 
         "一言" {
             val hitokoto = Api.getHitokoto()
-            group.sendMessage("${hitokoto.hitokoto}\n来自于：${hitokoto.from}")
+            group.sendMessage("「${hitokoto.hitokoto}」 ———— ${hitokoto.from}")
         }
 
         startsWith("点歌") { keyword ->
