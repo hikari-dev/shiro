@@ -1,6 +1,6 @@
 # shiro
 
-1. Create a config file named **shiroConfig.yml** under the same folder where your jar file at.
+1. Create a config file named **shiroConfig.yml** under the same folder where your jar file is.
 
 ```yml
 bot:
