@@ -49,7 +49,7 @@ private fun storeMessagesToDatabase() {
                         is Image -> "[image:${msg.queryUrl()}]"
                         is FlashImage -> "[flash:${msg.image.queryUrl()}]"
                         is At -> "[at:${msg.target}]"
-                        is Voice -> "[voice:${msg.url}]"
+                        is OnlineAudio -> "[audio:${msg.urlForDownload}]"
                         else -> msg.contentToString()
                     }
                 )

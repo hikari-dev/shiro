@@ -29,7 +29,7 @@ fun startSchedule() {
         .build()
     scheduler.scheduleJobs(
         mapOf(
-            morningJob to setOf(morningTrigger),
+//            morningJob to setOf(morningTrigger),
             moYuReminderJob to setOf(moYuTrigger)
         ), false
     )
