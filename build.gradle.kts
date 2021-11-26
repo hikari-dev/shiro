@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
-    val kotlinVersion = "1.5.31"
+    val kotlinVersion = "1.6.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.github.johnrengelman.shadow") version "7.1.0"
@@ -39,7 +39,7 @@ tasks.withType<Test> {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("net.mamoe", "mirai-core", "2.8.0")
+    implementation("net.mamoe", "mirai-core", "2.8.2")
 
     implementation("com.charleskorn.kaml:kaml:0.37.0")
 
