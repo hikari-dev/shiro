@@ -39,7 +39,7 @@ tasks.withType<Test> {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("net.mamoe", "mirai-core", "2.8.2")
+    implementation("net.mamoe", "mirai-core", "2.8.3")
 
     implementation("com.charleskorn.kaml:kaml:0.37.0")
 
