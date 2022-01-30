@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
-    val kotlinVersion = "1.6.0"
+    val kotlinVersion = "1.6.10"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -39,7 +39,7 @@ tasks.withType<Test> {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("net.mamoe", "mirai-core", "2.9.1")
+    implementation("net.mamoe", "mirai-core", "2.9.2")
 
     implementation("com.charleskorn.kaml:kaml:0.40.0")
 
@@ -57,6 +57,4 @@ dependencies {
     implementation(kotlin("test-junit5"))
     implementation(kotlin("test-common"))
     implementation(kotlin("test-annotations-common"))
-
-
 }
