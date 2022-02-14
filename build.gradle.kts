@@ -46,7 +46,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
     implementation("org.quartz-scheduler:quartz:2.3.2")
 
-    val exposedVersion = "0.32.1"
+    val exposedVersion = "0.37.2"
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
