@@ -50,7 +50,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
-    implementation("mysql:mysql-connector-java:8.0.28")
+    implementation("mysql:mysql-connector-java:8.0.29")
     implementation("com.zaxxer", "HikariCP", "4.0.2")
 
     implementation(kotlin("test"))
