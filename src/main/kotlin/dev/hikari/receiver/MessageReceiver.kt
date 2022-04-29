@@ -139,6 +139,11 @@ private fun handleGroupMessages() {
             group.sendMessage("https://lmbtfy.tk/?q=${Base64.getEncoder().encodeToString(query.toByteArray())}")
         }
 
+        startsWith("Praise") { name ->
+            val fact = Api.getChuckNorrisFacts()
+            val replace = fact.value.replace("Chuck Norris", name, true)
+            group.sendMessage(replace)
+        }
     }
 }
 

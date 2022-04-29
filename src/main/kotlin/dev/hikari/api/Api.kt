@@ -1,5 +1,6 @@
 package dev.hikari.api
 
+import dev.hikari.api.entity.ChuckNorrisFact
 import dev.hikari.api.entity.Hitokoto
 import dev.hikari.api.entity.QQMusicPlay
 import dev.hikari.api.entity.QQMusicSearch
@@ -32,8 +33,7 @@ object Api {
 
     suspend fun searchQQMusic(keyword: String): QQMusicSearch {
         val rspStr = httpClient.get<String>("https://c.y.qq.com/soso/fcgi-bin/client_search_cp?w=$keyword")
-            .removePrefix("callback(")
-            .removeSuffix(")")
+            .removePrefix("callback(").removeSuffix(")")
         return json.decodeFromString(QQMusicSearch.serializer(), rspStr)
     }
 
@@ -55,4 +55,8 @@ object Api {
         return
     }
 
+    suspend fun getChuckNorrisFacts(): ChuckNorrisFact {
+        val repStr = httpClient.get<String>("https://api.chucknorris.io/jokes/random?category=dev")
+        return json.decodeFromString(ChuckNorrisFact.serializer(), repStr)
+    }
 }
