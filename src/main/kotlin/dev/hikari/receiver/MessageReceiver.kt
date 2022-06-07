@@ -140,9 +140,16 @@ private fun handleGroupMessages() {
         }
 
         startsWith("Praise") { name ->
-            val fact = Api.getChuckNorrisFacts()
-            val replace = fact.value.replace("Chuck Norris", name, true)
-            group.sendMessage(replace)
+            val fact = Api.getChuckNorrisFacts().value
+            if (fact.contains("Chuck Norris", true)) {
+                val replace = fact.replace("Chuck Norris", name, true)
+                group.sendMessage(replace)
+            } else if (fact.contains("Chuck", true)) {
+                val replace = fact.replace("Chuck", name, true)
+                group.sendMessage(replace)
+            } else {
+                group.sendMessage("哭咩纳塞，Praise失败！")
+            }
         }
     }
 }
