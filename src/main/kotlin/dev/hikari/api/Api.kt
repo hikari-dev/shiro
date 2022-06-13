@@ -1,13 +1,14 @@
 package dev.hikari.api
 
-import dev.hikari.api.entity.ChuckNorrisFact
-import dev.hikari.api.entity.Hitokoto
-import dev.hikari.api.entity.QQMusicPlay
-import dev.hikari.api.entity.QQMusicSearch
+import dev.hikari.api.entity.*
+import dev.hikari.config.ShiroConfig
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.utils.io.jvm.javaio.*
 import kotlinx.serialization.json.Json
+import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
 object Api {
@@ -58,5 +59,15 @@ object Api {
     suspend fun getChuckNorrisFacts(): ChuckNorrisFact {
         val repStr = httpClient.get<String>("https://api.chucknorris.io/jokes/random?category=dev")
         return json.decodeFromString(ChuckNorrisFact.serializer(), repStr)
+    }
+
+    suspend fun getDailyNews(): InputStream {
+        val repStr =
+            httpClient.get<String>("https://v2.alapi.cn/api/zaobao?format=json&token=${ShiroConfig.config.alapiToken}")
+        val resp = json.decodeFromString(DailyNewsResp.serializer(), repStr)
+        val requestBuilder = HttpRequestBuilder().apply {
+            url(resp.data.image)
+        }
+        return HttpStatement(requestBuilder, httpClient).execute().content.toInputStream()
     }
 }

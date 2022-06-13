@@ -2,6 +2,7 @@ package dev.hikari.config
 
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.YamlConfiguration
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.io.File
 
@@ -16,7 +17,9 @@ object ShiroConfig {
 data class Config(
     val bot: BotConfig,
     val database: DatabaseConfig,
-    val masterQQ: Long
+    val masterQQ: Long,
+    @SerialName("alapi_token")
+    val alapiToken: String
 ) {
 
     @Serializable
