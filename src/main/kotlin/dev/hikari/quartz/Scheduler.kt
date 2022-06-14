@@ -32,8 +32,8 @@ fun startSchedule() {
         .withSchedule(CronScheduleBuilder.cronSchedule("00 00 15 * * ?"))
         .build()
     val dailyNewsJob = JobBuilder
-        .newJob(MoYuReminderTask::class.java)
-        .withIdentity("MoYuTask")
+        .newJob(DailyNewsTask::class.java)
+        .withIdentity("DailyNewsTask")
         .build()
     val dailyNewsTrigger = TriggerBuilder
         .newTrigger()

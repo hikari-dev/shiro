@@ -140,6 +140,10 @@ private fun handleGroupMessages() {
         }
 
         startsWith("Praise") { name ->
+            if (name.isEmpty()) {
+                group.sendMessage("你倒是说你要Praise谁呀 Baka!")
+                return@startsWith
+            }
             val fact = Api.getChuckNorrisFacts().value
             if (fact.contains("Chuck Norris", true)) {
                 val replace = fact.replace("Chuck Norris", name, true)
