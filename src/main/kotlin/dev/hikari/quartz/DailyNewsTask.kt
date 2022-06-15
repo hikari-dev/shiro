@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.mamoe.mirai.contact.Contact.Companion.sendImage
+import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import kotlin.coroutines.CoroutineContext
@@ -21,8 +21,9 @@ class DailyNewsTask(
     override fun execute(context: JobExecutionContext?) {
         launch {
             Api.getDailyNews().use { inputStream ->
+                val image = inputStream.uploadAsImage(shiro.asFriend)
                 shiro.groups.forEach { group ->
-                    group.sendImage(inputStream)
+                    group.sendMessage(image)
                 }
             }
         }
