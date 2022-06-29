@@ -38,7 +38,7 @@ fun startSchedule() {
     val dailyNewsTrigger = TriggerBuilder
         .newTrigger()
         .withIdentity("DailyNewsTrigger")
-        .withSchedule(CronScheduleBuilder.cronSchedule("00 00 08 * * ?"))
+        .withSchedule(CronScheduleBuilder.cronSchedule("00 00 09 * * ?"))
         .build()
     scheduler.scheduleJobs(
         mapOf(
