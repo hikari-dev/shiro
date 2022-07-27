@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import kotlin.coroutines.CoroutineContext
@@ -20,11 +19,13 @@ class DailyNewsTask(
 
     override fun execute(context: JobExecutionContext?) {
         launch {
-            Api.getDailyNews().use { inputStream ->
-                val image = inputStream.uploadAsImage(shiro.asFriend)
-                shiro.groups.forEach { group ->
-                    group.sendMessage(image)
-                }
+            val dailyNews = Api.getDailyNews()
+            val message = buildString {
+                dailyNews.news.forEach { append(it).append("\r\n") }
+                append(dailyNews.weiyu)
+            }
+            shiro.groups.forEach { group ->
+                group.sendMessage(message)
             }
         }
     }

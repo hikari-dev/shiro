@@ -17,5 +17,6 @@ data class DailyNewsResp(
 data class DailyNews(
     val date: String,
     val news: List<String>,
+    val weiyu: String,
     val image: String,
 )

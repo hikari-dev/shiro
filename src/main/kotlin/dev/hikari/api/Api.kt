@@ -5,10 +5,7 @@ import dev.hikari.config.ShiroConfig
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.utils.io.jvm.javaio.*
 import kotlinx.serialization.json.Json
-import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
 object Api {
@@ -61,13 +58,10 @@ object Api {
         return json.decodeFromString(ChuckNorrisFact.serializer(), repStr)
     }
 
-    suspend fun getDailyNews(): InputStream {
+    suspend fun getDailyNews(): DailyNews {
         val repStr =
             httpClient.get<String>("https://v2.alapi.cn/api/zaobao?format=json&token=${ShiroConfig.config.alapiToken}")
         val resp = json.decodeFromString(DailyNewsResp.serializer(), repStr)
-        val requestBuilder = HttpRequestBuilder().apply {
-            url(resp.data.image)
-        }
-        return HttpStatement(requestBuilder, httpClient).execute().content.toInputStream()
+        return resp.data
     }
 }
