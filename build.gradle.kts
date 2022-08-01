@@ -1,4 +1,7 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import java.text.SimpleDateFormat
+import java.util.*
 
 plugins {
     val kotlinVersion = "1.7.0"
@@ -19,7 +22,7 @@ tasks.withType<KotlinJvmCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-tasks.withType<Jar> {
+tasks.withType<ShadowJar> {
     manifest {
         attributes(
             mapOf(
@@ -30,6 +33,7 @@ tasks.withType<Jar> {
     from("./") {
         include("build.gradle.kts")
     }
+    archiveClassifier.set(SimpleDateFormat("yyyyMMddHHmmss").format(Date()))
 }
 
 tasks.withType<Test> {
