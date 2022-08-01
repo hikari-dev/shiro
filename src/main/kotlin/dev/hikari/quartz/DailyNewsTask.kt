@@ -21,7 +21,8 @@ class DailyNewsTask(
         launch {
             val dailyNews = Api.getDailyNews()
             val message = buildString {
-                dailyNews.news.forEach { append(it).append("\r\n") }
+                appendLine("${dailyNews.date}：")
+                dailyNews.news.forEach { appendLine(it) }
                 append(dailyNews.weiyu)
             }
             shiro.groups.forEach { group ->

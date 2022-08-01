@@ -39,7 +39,7 @@ tasks.withType<Test> {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("net.mamoe", "mirai-core", "2.12.0")
+    implementation("net.mamoe", "mirai-core", "2.12.1")
 
     implementation("com.charleskorn.kaml:kaml:0.46.0")
 
@@ -52,6 +52,8 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
     implementation("mysql:mysql-connector-java:8.0.30")
     implementation("com.zaxxer", "HikariCP", "4.0.2")
+
+    implementation("io.ktor:ktor-client-logging:1.6.7")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit5"))
