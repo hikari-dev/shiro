@@ -50,14 +50,19 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation("org.quartz-scheduler:quartz:2.3.2")
 
-    val exposedVersion = "0.37.2"
+    val exposedVersion = "0.39.2"
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
     implementation("mysql:mysql-connector-java:8.0.30")
     implementation("com.zaxxer", "HikariCP", "4.0.2")
+    implementation("org.xerial:sqlite-jdbc:3.39.2.0")
 
     implementation("io.ktor:ktor-client-logging:1.6.7")
+
+    val kumoVersion="1.28"
+    implementation("com.kennycason:kumo-core:$kumoVersion")
+    implementation("com.kennycason:kumo-tokenizers:$kumoVersion")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit5"))

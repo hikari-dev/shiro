@@ -3,4 +3,4 @@
 build
 device.json
 cache
-ShiroConfig.*
+shiroConfig.*

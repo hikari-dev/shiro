@@ -3,7 +3,6 @@ package dev.hikari.receiver
 import dev.hikari.api.Api
 import dev.hikari.command.ZuAnCommand
 import dev.hikari.config.ShiroConfig
-import dev.hikari.database.DbSettings
 import dev.hikari.database.History
 import dev.hikari.database.database
 import dev.hikari.database.execAndMap
@@ -33,11 +32,8 @@ fun handleMessages() {
 
     handleGroupMessages()
 
-    if (DbSettings.configValid) {
-        storeMessagesToDatabase()
-        markRecalledMessages()
-    }
-
+    storeMessagesToDatabase()
+    markRecalledMessages()
 }
 
 private fun storeMessagesToDatabase() {
