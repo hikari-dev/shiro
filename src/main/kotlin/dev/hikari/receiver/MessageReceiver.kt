@@ -155,6 +155,16 @@ private fun handleGroupMessages() {
                 group.sendMessage("哭咩纳塞，Praise失败！")
             }
         }
+
+        "早报来" {
+            val dailyNews = Api.getDailyNews()
+            val message = buildString {
+                appendLine("${dailyNews.date}：")
+                dailyNews.news.forEach { appendLine(it) }
+                append(dailyNews.weiyu)
+            }
+            group.sendMessage(message)
+        }
     }
 }
 
