@@ -29,7 +29,7 @@ object Api {
         }
     }
 
-    val json = Json {
+    private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
     }
