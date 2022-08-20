@@ -1,5 +1,6 @@
 package dev.hikari.api.entity
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,28 +11,43 @@ data class QQMusicSearch(
 
 @Serializable
 data class QQMusicSearchData(
-    val keyword: String,
+    val album: AlbumList,
     val song: SongList
 )
 
 @Serializable
+data class AlbumList(
+    val count: Int,
+    @SerialName("itemlist")
+    val itemList: List<Album>
+)
+
+@Serializable
+data class Album(
+    @SerialName("docid")
+    val docId: String,
+    val id: String,
+    val mid: String,
+    val name: String,
+    val pic: String,
+    val singer: String
+)
+
+@Serializable
 data class SongList(
-    val list: List<Song>
+    val count: Int,
+    @SerialName("itemlist")
+    val itemList: List<Song>
 )
 
 @Serializable
 data class Song(
-    val albummid: String,
-    val songmid: String,
-    val songname: String,
-    val singer: List<Singer>,
-    val media_mid: String,
-    val songid: Int
-)
-
-@Serializable
-data class Singer(
-    val name: String
+    @SerialName("docid")
+    val docId: String,
+    val id: String,
+    val mid: String,
+    val name: String,
+    val singer: String
 )
 
 @Serializable

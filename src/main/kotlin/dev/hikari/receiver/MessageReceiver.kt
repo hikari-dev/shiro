@@ -34,6 +34,7 @@ fun handleMessages() {
     handleGroupMessages()
 
     if (DbSettings.configValid) {
+        //save message history and mark recalled message
         storeMessagesToDatabase()
         markRecalledMessages()
     }
@@ -92,15 +93,23 @@ private fun handleGroupMessages() {
 
         startsWith("点歌") { keyword ->
             val qqMusicSearch = Api.searchQQMusic(keyword)
-            val song = qqMusicSearch.data.song.list[0]
-            val playUrl = Api.getQQMusicPlayUrl(song.songmid)
+            if (qqMusicSearch.data.song.count <= 0) {
+                return@startsWith
+            }
+            val song = qqMusicSearch.data.song.itemList[0]
+            val playUrl = Api.getQQMusicPlayUrl(song.mid)
+            val picUrl = if (qqMusicSearch.data.album.count <= 0) {
+                ""
+            } else {
+                qqMusicSearch.data.album.itemList[0].pic
+            }
             group.sendMessage(
                 MusicShare(
                     kind = MusicKind.QQMusic,
-                    title = song.songname,
-                    summary = song.singer[0].name,
-                    jumpUrl = "https://i.y.qq.com/v8/playsong.html?hosteuin=7wCPoK6l7wcl&sharefrom=&from_id=7384606714&from_idtype=10015&from_name=(7rpl)&songid=${song.songid}&songmid=&type=0&platform=1&appsongtype=1&_wv=1&source=qq&appshare=iphone&media_mid=${song.media_mid}&ADTAG=qfshare&_wv=1",
-                    pictureUrl = "https://y.qq.com/music/photo_new/T002R300x300M000${song.albummid}.jpg",
+                    title = song.name,
+                    summary = song.singer,
+                    jumpUrl = "https://i.y.qq.com/v8/playsong.html?hosteuin=7wCPoK6l7wcl&sharefrom=&from_id=7384606714&from_idtype=10015&from_name=(7rpl)&songid=${song.id}&songmid=&type=0&platform=1&appsongtype=1&_wv=1&source=qq&appshare=iphone&media_mid=${song.mid}&ADTAG=qfshare&_wv=1",
+                    pictureUrl = picUrl,
                     musicUrl = playUrl
                 )
             )

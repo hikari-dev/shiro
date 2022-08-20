@@ -40,8 +40,8 @@ object Api {
     }
 
     suspend fun searchQQMusic(keyword: String): QQMusicSearch {
-        val rspStr = httpClient.get<String>("https://c.y.qq.com/soso/fcgi-bin/client_search_cp?w=$keyword")
-            .removePrefix("callback(").removeSuffix(")")
+        val rspStr =
+            httpClient.get<String>("https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg?format=json&platform=yqq.json&key=${keyword}")
         return json.decodeFromString(QQMusicSearch.serializer(), rspStr)
     }
 
