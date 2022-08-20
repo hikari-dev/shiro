@@ -166,21 +166,16 @@ private fun handleGroupMessages() {
 
 private fun markRecalledMessages() {
     shiro.eventChannel.subscribeAlways<MessageRecallEvent> { event ->
-        if (event is MessageRecallEvent.FriendRecall) {
-            transaction(database) {
-                History.update({
-                    (History.qq eq event.operatorId) and (History.serverId eq event.messageIds.joinToString())
-                }) {
-                    it[recalled] = 1
-                }
-            }
-        } else if (event is MessageRecallEvent.GroupRecall) {
-            transaction(database) {
-                History.update({
-                    (History.groupQQ eq event.group.id) and (History.serverId eq event.messageIds.joinToString())
-                }) {
-                    it[recalled] = 1
-                }
+        val qq = when (event) {
+            is MessageRecallEvent.FriendRecall -> event.operatorId
+            is MessageRecallEvent.GroupRecall -> event.group.id
+            else -> return@subscribeAlways
+        }
+        transaction(database) {
+            History.update({
+                (History.qq eq qq) and (History.serverId eq event.messageIds.joinToString())
+            }) {
+                it[recalled] = 1
             }
         }
     }
