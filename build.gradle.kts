@@ -54,7 +54,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
-    implementation("mysql:mysql-connector-java:8.0.30")
+    implementation("mysql:mysql-connector-java:8.0.31")
     implementation("com.zaxxer", "HikariCP", "4.0.2")
 
     implementation("io.ktor:ktor-client-logging:1.6.7")
