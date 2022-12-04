@@ -41,8 +41,6 @@ fun handleMessages() {
     markRecalledMessages()
 }
 
-}
-
 private fun storeMessagesToDatabase() {
     shiro.eventChannel.subscribeAlways<MessageEvent> { event ->
         val messageContent = buildString {
