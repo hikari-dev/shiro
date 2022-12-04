@@ -3,11 +3,12 @@ package dev.hikari.receiver
 import dev.hikari.api.Api
 import dev.hikari.command.ZuAnCommand
 import dev.hikari.config.ShiroConfig
-import dev.hikari.database.DbSettings
 import dev.hikari.database.History
 import dev.hikari.database.database
 import dev.hikari.database.execAndMap
 import dev.hikari.shiro
+import dev.hikari.util.WordCloudUtils
+import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
@@ -15,8 +16,10 @@ import net.mamoe.mirai.event.events.MessageRecallEvent
 import net.mamoe.mirai.event.subscribeGroupMessages
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
+import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.text.SimpleDateFormat
@@ -33,11 +36,10 @@ fun handleMessages() {
 
     handleGroupMessages()
 
-    if (DbSettings.configValid) {
-        //save message history and mark recalled message
-        storeMessagesToDatabase()
-        markRecalledMessages()
-    }
+    //save message history and mark recalled message
+    storeMessagesToDatabase()
+    markRecalledMessages()
+}
 
 }
 
@@ -173,6 +175,22 @@ private fun handleGroupMessages() {
                 append(dailyNews.weiyu)
             }
             group.sendMessage(message)
+        }
+
+        "看看我都说了啥" {
+            var histories: List<String>? = null
+            transaction(database) {
+                histories = History.select { (History.qq eq sender.id) and (History.groupQQ eq group.id) }
+                    .map { it[History.content] }
+                    .filter { !it.startsWith("[") && !it.contains("at:") }
+                    .toList()
+            }
+            if (histories.isNullOrEmpty()) {
+                group.sendMessage("没查到你说过啥捏")
+            }
+            val bytes = WordCloudUtils.generateWordCloud(histories!!)
+            group.sendImage(bytes.toExternalResource("png"))
+
         }
     }
 }
