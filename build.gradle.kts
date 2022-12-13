@@ -58,7 +58,7 @@ dependencies {
     implementation("com.zaxxer", "HikariCP", "4.0.2")
     implementation("org.xerial:sqlite-jdbc:3.39.2.0")
 
-    implementation("io.ktor:ktor-client-logging:2.1.3")
+    implementation("io.ktor:ktor-client-logging:2.2.1")
 
     val kumoVersion="1.28"
     implementation("com.kennycason:kumo-core:$kumoVersion")
