@@ -14,6 +14,8 @@ database:
   password: password
 
 masterQQ: 123456
+
+alapi_token: 123456
 ```
 
 2. Run shiro.jar
