@@ -4,3 +4,4 @@ build
 device.json
 cache
 shiroConfig.*
+data.db

@@ -25,9 +25,8 @@ class DailyNewsTask(
                 dailyNews.news.forEach { appendLine(it) }
                 append(dailyNews.weiyu)
             }
-            shiro.groups.forEach { group ->
-                group.sendMessage(message)
-            }
+            shiro.groups.filter { it.id != 827253680L }
+                .forEach { group -> group.sendMessage(message) }
         }
     }
 

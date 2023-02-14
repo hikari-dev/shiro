@@ -19,7 +19,7 @@ repositories {
 }
 
 tasks.withType<KotlinJvmCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 tasks.withType<ShadowJar> {
@@ -54,8 +54,8 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
-    implementation("mysql:mysql-connector-java:8.0.32")
-    implementation("com.zaxxer", "HikariCP", "5.0.1")
+//    implementation("mysql:mysql-connector-java:8.0.32")
+//    implementation("com.zaxxer", "HikariCP", "5.0.1")
     implementation("org.xerial:sqlite-jdbc:3.40.1.0")
 
     val ktorVersion = "2.2.3"
