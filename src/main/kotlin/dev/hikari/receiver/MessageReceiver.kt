@@ -167,12 +167,8 @@ private fun handleGroupMessages() {
 
         "早报来" {
             val dailyNews = Api.getDailyNews()
-            val message = buildString {
-                appendLine("${dailyNews.date}：")
-                dailyNews.news.forEach { appendLine(it) }
-                append(dailyNews.weiyu)
-            }
-            group.sendMessage(message)
+            val picture = Api.getDailyNewsPicture(dailyNews.image)
+            group.sendImage(picture)
         }
 
         "看看我都说了啥" {

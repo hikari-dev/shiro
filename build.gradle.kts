@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,8 +17,8 @@ repositories {
     maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
 
-tasks.withType<KotlinJvmCompile> {
-    kotlinOptions.jvmTarget = "11"
+kotlin {
+    jvmToolchain(11)
 }
 
 tasks.withType<ShadowJar> {

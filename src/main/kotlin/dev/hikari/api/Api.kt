@@ -8,7 +8,11 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.utils.io.jvm.javaio.*
 import kotlinx.serialization.json.Json
+import net.mamoe.mirai.utils.ExternalResource
+import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import java.util.concurrent.TimeUnit
 
 object Api {
@@ -77,5 +81,18 @@ object Api {
                 .body<String>()
         val resp = json.decodeFromString(DailyNewsResp.serializer(), repStr)
         return resp.data
+    }
+
+    suspend fun getDailyNewsPicture(url: String): ExternalResource {
+        val requestBuilder = HttpRequestBuilder().apply {
+            url(url)
+        }
+        return HttpStatement(requestBuilder, httpClient)
+            .execute()
+            .bodyAsChannel()
+            .toInputStream()
+            .use {
+                it.toExternalResource()
+            }
     }
 }
