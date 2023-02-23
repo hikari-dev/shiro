@@ -55,7 +55,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
 //    implementation("mysql:mysql-connector-java:8.0.32")
 //    implementation("com.zaxxer", "HikariCP", "5.0.1")
-    implementation("org.xerial:sqlite-jdbc:3.40.1.0")
+    implementation("org.xerial:sqlite-jdbc:3.41.0.0")
 
     val ktorVersion = "2.2.3"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
