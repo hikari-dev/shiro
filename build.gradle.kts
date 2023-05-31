@@ -57,7 +57,7 @@ dependencies {
 //    implementation("com.zaxxer", "HikariCP", "5.0.1")
     implementation("org.xerial:sqlite-jdbc:3.42.0.0")
 
-    val ktorVersion = "2.3.0"
+    val ktorVersion = "2.3.1"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
