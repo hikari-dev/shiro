@@ -171,21 +171,21 @@ private fun handleGroupMessages() {
             group.sendImage(picture)
         }
 
-        "看看我都说了啥" {
-            var histories: List<String>? = null
-            transaction(database) {
-                histories = History.select { (History.qq eq sender.id) and (History.groupQQ eq group.id) }
-                    .map { it[History.content] }
-                    .filter { !it.startsWith("[") && !it.contains("at:") }
-                    .toList()
-            }
-            if (histories.isNullOrEmpty()) {
-                group.sendMessage("没查到你说过啥捏")
-            }
-            val bytes = WordCloudUtils.generateWordCloud(histories!!)
-            group.sendImage(bytes.toExternalResource("png"))
-
-        }
+//        "看看我都说了啥" {
+//            var histories: List<String>? = null
+//            transaction(database) {
+//                histories = History.select { (History.qq eq sender.id) and (History.groupQQ eq group.id) }
+//                    .map { it[History.content] }
+//                    .filter { !it.startsWith("[") && !it.contains("at:") }
+//                    .toList()
+//            }
+//            if (histories.isNullOrEmpty()) {
+//                group.sendMessage("没查到你说过啥捏")
+//            }
+//            val bytes = WordCloudUtils.generateWordCloud(histories!!)
+//            group.sendImage(bytes.toExternalResource("png"))
+//
+//        }
     }
 }
 

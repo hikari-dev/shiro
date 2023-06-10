@@ -62,9 +62,9 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
-    val kumoVersion = "1.28"
-    implementation("com.kennycason:kumo-core:$kumoVersion")
-    implementation("com.kennycason:kumo-tokenizers:$kumoVersion")
+//    val kumoVersion = "1.28"
+//    implementation("com.kennycason:kumo-core:$kumoVersion")
+//    implementation("com.kennycason:kumo-tokenizers:$kumoVersion")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit5"))
