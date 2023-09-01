@@ -46,7 +46,7 @@ dependencies {
 
     implementation("com.charleskorn.kaml:kaml:0.55.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")
 
     val exposedVersion = "0.43.0"
