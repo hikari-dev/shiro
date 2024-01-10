@@ -41,6 +41,7 @@ tasks.withType<Test> {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
 
     implementation("net.mamoe", "mirai-core", "2.16.0")
 
