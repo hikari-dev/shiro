@@ -6,6 +6,7 @@ plugins {
     val kotlinVersion = "1.9.22"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
+    kotlin("plugin.atomicfu") version kotlinVersion
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
