@@ -7,19 +7,14 @@ import dev.hikari.database.History
 import dev.hikari.database.database
 import dev.hikari.database.execAndMap
 import dev.hikari.shiro
-import dev.hikari.util.WordCloudUtils
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.contact.nameCardOrNick
-import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.MessageEvent
-import net.mamoe.mirai.event.events.MessageRecallEvent
+import net.mamoe.mirai.event.events.*
 import net.mamoe.mirai.event.subscribeGroupMessages
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
-import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.text.SimpleDateFormat
@@ -186,6 +181,26 @@ private fun handleGroupMessages() {
 //            group.sendImage(bytes.toExternalResource("png"))
 //
 //        }
+    }
+
+    shiro.eventChannel.subscribeAlways<MemberJoinEvent> {
+        group.sendMessage(buildMessageChain {
+            add("欢迎新人")
+            add(member.at())
+            add("入群~")
+        })
+    }
+
+    shiro.eventChannel.subscribeAlways<MemberLeaveEvent> {
+        when (this) {
+            is MemberLeaveEvent.Kick -> {
+                group.sendMessage("可怜的${member.nick}(${member.id})，被${operator?.nick}玩弄于手掌")
+            }
+
+            is MemberLeaveEvent.Quit -> {
+                group.sendMessage("${member.nick}(${member.id}) 跑路了")
+            }
+        }
     }
 }
 
