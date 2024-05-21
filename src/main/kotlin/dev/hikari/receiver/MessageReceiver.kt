@@ -194,7 +194,7 @@ private fun handleGroupMessages() {
     shiro.eventChannel.subscribeAlways<MemberLeaveEvent> {
         when (this) {
             is MemberLeaveEvent.Kick -> {
-                group.sendMessage("可怜的${member.nick}(${member.id})，被${operator?.nick}玩弄于手掌")
+                group.sendMessage("可怜的 ${member.nick}(${member.id}), 被 ${operator?.nick} 无情带走")
             }
 
             is MemberLeaveEvent.Quit -> {
