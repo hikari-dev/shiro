@@ -1,27 +1,22 @@
 package dev.hikari
 
-import dev.hikari.config.ShiroConfig
 import dev.hikari.quartz.startSchedule
 import dev.hikari.receiver.handleMessages
 import kotlinx.coroutines.runBlocking
-import net.mamoe.mirai.BotFactory
-import net.mamoe.mirai.alsoLogin
-import net.mamoe.mirai.utils.BotConfiguration.MiraiProtocol.ANDROID_PAD
+import net.mamoe.mirai.Bot
+import net.mamoe.mirai.utils.MiraiLogger
+import top.mrxiaom.overflow.BotBuilder
 
-val shiro by lazy {
-    BotFactory.newBot(ShiroConfig.config.bot.qq, ShiroConfig.config.bot.password) {
-        fileBasedDeviceInfo()
-        protocol = ANDROID_PAD
-    }
-}
-
-val logger by lazy { shiro.logger }
+lateinit var shiro: Bot
+lateinit var logger:MiraiLogger
 
 fun main(): Unit = runBlocking {
-
-    shiro.alsoLogin()
+    shiro = BotBuilder.positive("ws://127.0.0.1:3001")
+        .connect() ?: return@runBlocking
+    logger= shiro.logger
 
     handleMessages()
 
     startSchedule()
 }
+

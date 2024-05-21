@@ -15,18 +15,11 @@ object ShiroConfig {
 
 @Serializable
 data class Config(
-    val bot: BotConfig,
     val database: DatabaseConfig,
     val masterQQ: Long,
     @SerialName("alapi_token")
     val alapiToken: String
 ) {
-
-    @Serializable
-    data class BotConfig(
-        val qq: Long,
-        val password: String
-    )
 
     @Serializable
     data class DatabaseConfig(

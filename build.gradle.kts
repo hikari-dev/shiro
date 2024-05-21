@@ -15,7 +15,7 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
-    maven(url = "https://kotlin.bintray.com/kotlinx/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
 }
 
 kotlin {
@@ -45,7 +45,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    implementation("net.mamoe", "mirai-core", "2.16.0")
+    implementation("top.mrxiaom:overflow-core-all:2.16.0-d53033f-SNAPSHOT")
+    implementation("net.mamoe", "mirai-core-api", "2.16.0")
 
     implementation("com.charleskorn.kaml:kaml:0.59.0")
 
@@ -56,18 +57,12 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
-//    implementation("mysql:mysql-connector-java:8.0.32")
-//    implementation("com.zaxxer", "HikariCP", "5.0.1")
     implementation("org.xerial:sqlite-jdbc:3.45.3.0")
 
     val ktorVersion = "2.3.11"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
-
-//    val kumoVersion = "1.28"
-//    implementation("com.kennycason:kumo-core:$kumoVersion")
-//    implementation("com.kennycason:kumo-tokenizers:$kumoVersion")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit5"))
