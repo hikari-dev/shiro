@@ -185,9 +185,9 @@ private fun handleGroupMessages() {
 
     shiro.eventChannel.subscribeAlways<MemberJoinEvent> {
         group.sendMessage(buildMessageChain {
-            add("欢迎新人")
+            add("欢迎新人 ")
             add(member.at())
-            add("入群~")
+            add(" 入群~")
         })
     }
 
