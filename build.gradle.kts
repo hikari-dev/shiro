@@ -48,7 +48,7 @@ dependencies {
     implementation("top.mrxiaom:overflow-core-all:2.16.0-d53033f-SNAPSHOT")
     implementation("net.mamoe", "mirai-core-api", "2.16.0")
 
-    implementation("com.charleskorn.kaml:kaml:0.59.0")
+    implementation("com.charleskorn.kaml:kaml:0.60.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
     implementation("org.quartz-scheduler:quartz:2.3.2")
