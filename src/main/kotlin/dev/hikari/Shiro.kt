@@ -11,7 +11,7 @@ lateinit var shiro: Bot
 lateinit var logger: MiraiLogger
 
 fun main(): Unit = runBlocking {
-    shiro = BotBuilder.positive("ws://127.0.0.1:3001")
+    shiro = BotBuilder.reversed(5700)
         .connect() ?: return@runBlocking
 
     logger = shiro.logger
