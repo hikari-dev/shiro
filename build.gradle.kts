@@ -57,7 +57,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
-    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.1")
 
     val ktorVersion = "2.3.12"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
