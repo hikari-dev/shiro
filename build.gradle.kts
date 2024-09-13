@@ -42,7 +42,7 @@ tasks.withType<Test> {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2")
 
     implementation("top.mrxiaom:overflow-core-all:2.16.0-0c5f30a-SNAPSHOT")
