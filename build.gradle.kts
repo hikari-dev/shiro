@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 plugins {
-    val kotlinVersion = "2.0.20"
+    val kotlinVersion = "2.0.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     kotlin("plugin.atomicfu") version kotlinVersion
