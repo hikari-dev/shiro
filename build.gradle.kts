@@ -59,7 +59,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
     implementation("org.xerial:sqlite-jdbc:3.47.0.0")
 
-    val ktorVersion = "3.0.0"
+    val ktorVersion = "3.0.1"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
