@@ -18,7 +18,9 @@ data class Config(
     val database: DatabaseConfig,
     val masterQQ: Long,
     @SerialName("alapi_token")
-    val alapiToken: String
+    val alapiToken: String,
+    @SerialName("deep_seek_token")
+    val deepSeekToken:String,
 ) {
 
     @Serializable
