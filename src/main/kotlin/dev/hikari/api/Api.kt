@@ -22,8 +22,8 @@ object Api {
     private val httpClient = HttpClient(OkHttp) {
         engine {
             config {
-                connectTimeout(8, TimeUnit.SECONDS)
-                readTimeout(8, TimeUnit.SECONDS)
+                connectTimeout(120, TimeUnit.SECONDS)
+                readTimeout(120, TimeUnit.SECONDS)
             }
         }
         install(Logging) {
