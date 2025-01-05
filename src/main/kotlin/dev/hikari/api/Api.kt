@@ -10,9 +10,11 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.utils.io.jvm.javaio.*
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.mamoe.mirai.utils.ExternalResource
 import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 object Api {
@@ -37,7 +39,10 @@ object Api {
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
+        encodeDefaults = true
     }
+
+    private val chatHistory = LinkedList<Prompt>().also { it.add(Prompt("system", "You are a helpful assistant.")) }
 
     suspend fun getHitokoto(): Hitokoto {
         val rspStr = httpClient.get("https://v1.hitokoto.cn").body<String>()
@@ -94,5 +99,25 @@ object Api {
             .use {
                 it.toExternalResource()
             }
+    }
+
+    suspend fun deepSeekChat(content: String): String {
+        addChatHistory(Prompt("user", content))
+        val respStr = httpClient.post("https://api.deepseek.com/chat/completions") {
+            header("Authorization", "Bearer ${ShiroConfig.config.deepSeekToken}")
+            header("Content-Type", "application/json")
+            setBody(json.encodeToString(DeepSeekChat(messages = chatHistory)))
+        }.body<String>()
+        val resp = json.decodeFromString<ChatResponse>(respStr)
+        val promptResp = resp.choices[0].message
+        addChatHistory(promptResp)
+        return promptResp.content
+    }
+
+    private fun addChatHistory(prompt: Prompt) {
+        if (chatHistory.size >= 21) {
+            chatHistory.removeAt(1)
+        }
+        chatHistory.add(prompt)
     }
 }

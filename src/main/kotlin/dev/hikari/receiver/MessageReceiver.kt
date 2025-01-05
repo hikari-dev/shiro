@@ -18,7 +18,6 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.text.SimpleDateFormat
-import java.util.*
 
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
@@ -81,6 +80,13 @@ private fun handleFriendMessages() {
 private fun handleGroupMessages() {
     shiro.eventChannel.subscribeGroupMessages {
 
+        atBot {
+            val filterMessageList: List<Message> = message.filter { it !is At }
+            val msg = filterMessageList.toMessageChain().contentToString()
+            val result = Api.deepSeekChat(msg)
+            group.sendMessage(result)
+        }
+
         "一言" {
             val hitokoto = Api.getHitokoto()
             group.sendMessage("「${hitokoto.hitokoto}」—— ${hitokoto.from}")
@@ -139,9 +145,9 @@ private fun handleGroupMessages() {
             }
         }
 
-        startsWith("百度") { query ->
-            group.sendMessage("https://lmbtfy.tk/?q=${Base64.getEncoder().encodeToString(query.toByteArray())}")
-        }
+//        startsWith("百度") { query ->
+//            group.sendMessage("https://lmbtfy.tk/?q=${Base64.getEncoder().encodeToString(query.toByteArray())}")
+//        }
 
         startsWith("Praise") { name ->
             if (name.isEmpty()) {
