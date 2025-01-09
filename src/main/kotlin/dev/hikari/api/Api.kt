@@ -10,7 +10,6 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.utils.io.jvm.javaio.*
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.mamoe.mirai.utils.ExternalResource
 import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
@@ -115,7 +114,7 @@ object Api {
     }
 
     private fun addChatHistory(prompt: Prompt) {
-        if (chatHistory.size >= 21) {
+        if (chatHistory.size >= 31) {
             chatHistory.removeAt(1)
         }
         chatHistory.add(prompt)
