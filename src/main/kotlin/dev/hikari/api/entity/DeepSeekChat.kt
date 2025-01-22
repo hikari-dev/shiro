@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeepSeekChat(
-    val model: String = "deepseek-chat",
+    val model: String = "deepseek-reasoner",
     val stream: Boolean = false,
     val messages: List<Prompt>
 )
