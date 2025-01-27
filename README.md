@@ -16,6 +16,8 @@ database:
 masterQQ: 123456
 
 alapi_token: 123456
+
+deep_seek_token: 123456
 ```
 
 2. Run shiro.jar
