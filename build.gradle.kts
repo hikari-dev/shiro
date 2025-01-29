@@ -45,7 +45,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
-    implementation("top.mrxiaom.mirai:overflow-core:1.0.2")
+    implementation("top.mrxiaom.mirai:overflow-core:1.0.3")
     implementation("net.mamoe", "mirai-core-api", "2.16.0")
 
     implementation("com.charleskorn.kaml:kaml:0.67.0")
