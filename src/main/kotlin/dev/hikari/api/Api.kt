@@ -81,7 +81,7 @@ object Api {
 
     suspend fun getDailyNews(): DailyNews {
         val repStr =
-            httpClient.get("https://v2.alapi.cn/api/zaobao?format=json&token=${ShiroConfig.config.alapiToken}")
+            httpClient.get("https://v3.alapi.cn/api/zaobao?format=json&token=${ShiroConfig.config.alapiToken}")
                 .body<String>()
         val resp = json.decodeFromString(DailyNewsResp.serializer(), repStr)
         return resp.data
